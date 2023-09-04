@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dotnet>
+	<runtime name="aspnet" version="5.0" >
+		<build version="14">
+			<arch target="arm" link="" sha512="" sha256="" md5="" />
+			<arch target="arm64" link="" sha512="" sha256="" md5="" />
+			<arch target="x64" link="" sha512="" sha256="" md5="" />
+		</build>
+	</runtime>
+</dotnet>

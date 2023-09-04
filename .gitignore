@@ -1,0 +1,5 @@
+.vs/*
+meta_dotnet_core_gen/bin/*
+meta_dotnet_core_gen/meta_dotnet_core_gen.csproj.user
+meta_dotnet_core_gen/obj/*
+meta_dotnet_core_gen/Properties/launchSettings.json
