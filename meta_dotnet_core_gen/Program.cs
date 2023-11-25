@@ -25,6 +25,7 @@
 // ******************************************************************************************************************************
 using HtmlAgilityPack;
 using meta_dotnet_core_gen.Auto;
+using System.Net;
 
 namespace meta_dotnet_core_gen
 {
@@ -55,6 +56,10 @@ namespace meta_dotnet_core_gen
 				Console.WriteLine($"ERROR: {message}");
 				return;
 			}
+
+			string tmpFolder = Path.Combine(Environment.CurrentDirectory, "dotnet-tmp");
+			if (!Directory.Exists(tmpFolder))
+				Directory.CreateDirectory(tmpFolder);
 
 			Dotnet dotnet = null;
 			if(File.Exists(settings.Config))
@@ -133,7 +138,7 @@ namespace meta_dotnet_core_gen
 				Console.WriteLine();
 				if (key.KeyChar == 'y' || key.KeyChar == 'Y')
 				{
-					dotnet.UpdateHashes(Path.Combine(Environment.CurrentDirectory, "dotnet-tmp"));
+					dotnet.UpdateHashes(tmpFolder);
 
 					// Save the new configuration file.
 					dotnet.ExportToXML(settings.Config);
@@ -141,7 +146,7 @@ namespace meta_dotnet_core_gen
 			}
 
 			// Parse the meta layer files.
-			Dotnet meta = ParseMetaLayer(settings.MetaFolder);
+			Dotnet meta = ParseRuntimeMetaLayer(settings.MetaFolder);
 
 			// Find any meta that doesn't exist online.
 			var metaNotOnline = Dotnet.FindMetaThatIsntOnline(dotnet, meta);
@@ -173,7 +178,8 @@ namespace meta_dotnet_core_gen
 				Console.WriteLine();
 			}
 
-			if(metaDiffs.Length > 0 || onlineNotMeta.Length > 0)
+			string copyrightHolder = null;
+			if (metaDiffs.Length > 0 || onlineNotMeta.Length > 0)
 			{
 				// Prompt to generate new meta.
 				Console.Write("Do you want to fix/create meta files for the above changes (Y/N):");
@@ -182,13 +188,49 @@ namespace meta_dotnet_core_gen
 				if (key.KeyChar == 'y' || key.KeyChar == 'Y')
 				{
 					Console.Write("Enter the copyright name to put in the new files: ");
-					string copyrightHolder = Console.ReadLine();
+					copyrightHolder = Console.ReadLine();
 					Dotnet.UpdateMeta(dotnet, meta, settings.MetaFolder, copyrightHolder);
 				}
 			}
 			else
 			{
 				Console.WriteLine("No additional meta files were generated/updated.");
+			}
+
+			var dbgVer = DebuggerUtils.GetCurrentOnlineDebuggerVersion(tmpFolder, out string scriptSha256, out string scriptMd5);
+			if(dbgVer != null)
+			{
+				var lookup = DebuggerUtils.ParseDebuggerMetaLayer(settings.MetaFolder);
+				if(!lookup.ContainsKey(dbgVer.Major))
+				{
+					Console.WriteLine($"Found online debugger version {dbgVer}. This is a new Major version without a current recipe. A version {dbgVer.Major} base recipe file (vsdbg_{dbgVer.Major}.x.inc) will need to be created first and the dependencies checked.");
+				}
+				else
+				{
+					if (!lookup[dbgVer.Major].Contains(dbgVer.ToString(4)))
+					{
+						Console.WriteLine($"Found an online debugger version ({dbgVer}) that does not have a recipe.");
+						Console.Write($"Would you like to generate a new recipe for it (Y/N):");
+						key = Console.ReadKey();
+						Console.WriteLine();
+						if(key.KeyChar == 'y' || key.KeyChar == 'Y')
+						{
+							if(copyrightHolder == null)
+							{
+								Console.Write("Enter the copyright name to put in the new files: ");
+								copyrightHolder = Console.ReadLine();
+							}
+
+							// Create the meta files.
+							DebuggerUtils.CreateRecipeFiles(settings.MetaFolder, tmpFolder, copyrightHolder, dbgVer, scriptSha256, scriptMd5, new Dotnet.Runtime.Build.Arch.TargetEnum[]
+							{
+								Dotnet.Runtime.Build.Arch.TargetEnum.Arm,
+								Dotnet.Runtime.Build.Arch.TargetEnum.X64,
+								Dotnet.Runtime.Build.Arch.TargetEnum.Arm64
+							});
+						}
+					}
+				}
 			}
 		}
 
@@ -241,7 +283,7 @@ namespace meta_dotnet_core_gen
 		/// </summary>
 		/// <param name="folder">Location of the meta layer.</param>
 		/// <returns><see cref="Dotnet"/> object containing the parsed information.</returns>
-		private static Dotnet ParseMetaLayer(string folder)
+		private static Dotnet ParseRuntimeMetaLayer(string folder)
 		{
 			var cfg = new Dotnet();
 

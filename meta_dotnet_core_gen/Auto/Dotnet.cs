@@ -90,28 +90,15 @@ namespace meta_dotnet_core_gen.Auto
 						var fileName = uri.Segments.Last().TrimEnd('/');
 						var downloadedFile = Path.Combine(tmpPath, fileName);
 
-						if (!Directory.Exists(tmpPath))
-							Directory.CreateDirectory(tmpPath);
-
-						if (File.Exists(downloadedFile))
-							File.Delete(downloadedFile);
-
 						// Download the file.
 						Console.Write($"Downloading {fileName}...");
-						using (var client = new WebClient())
-						{
-							Thread.Sleep(1000);
-							client.DownloadFile(this.Link, downloadedFile);
-						}
+						RecipeUtils.DownloadFile(this.Link, downloadedFile);
 
-						byte[] data = File.ReadAllBytes(downloadedFile);
+						// Compute the hashes.
+						Console.Write("Computing Hashes...");
+						string computedSha = RecipeUtils.ComputeHashes(downloadedFile, Md5 == null, Sha256 == null, out string sha256Hash, out string md5Hash);
+
 						Console.Write("Verifying...");
-						string computedSha;
-						using (SHA512 sha = SHA512.Create())
-						{
-							computedSha = ComputeHash(sha, data);
-						}
-
 						if (string.Compare(computedSha, this.Sha512, true) != 0)
 						{
 							Console.WriteLine("failed!");
@@ -119,34 +106,11 @@ namespace meta_dotnet_core_gen.Auto
 						}
 
 						if (Md5 == null)
-						{
-							Console.Write($"Computing MD5...");
-							using (MD5 md5 = MD5.Create())
-							{
-								Md5 = ComputeHash(md5, data);
-							}
-						}
-
+							Md5 = md5Hash;
 						if(Sha256 == null)
-						{
-							Console.Write($"Computing SHA-256...");
-							using (SHA256 sha = SHA256.Create())
-							{
-								Sha256 = ComputeHash(sha, data);
-							}
-						}
+							Sha256 = sha256Hash;
+
 						Console.WriteLine("done!");
-					}
-
-					private static string ComputeHash(HashAlgorithm hashAlgorithm, byte[] data)
-					{
-						// Compute the hash.
-						byte[] hash = hashAlgorithm.ComputeHash(data);
-
-						var sb = new StringBuilder();
-						for (int i = 0; i < hash.Length; i++)
-							sb.Append(hash[i].ToString("x2"));
-						return sb.ToString();
 					}
 
 					/// <summary>
