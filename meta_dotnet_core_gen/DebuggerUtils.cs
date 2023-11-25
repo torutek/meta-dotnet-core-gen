@@ -23,6 +23,7 @@
 // SOFTWARE.
 // ******************************************************************************************************************************
 using meta_dotnet_core_gen.Auto;
+using System.Reflection;
 
 namespace meta_dotnet_core_gen
 {
@@ -124,6 +125,7 @@ namespace meta_dotnet_core_gen
 				sw.WriteLine($"# Contains the URL and checksums to download version {ver.ToString(4)} of the {targetName.ToUpper()} Visual Studio");
 				sw.WriteLine($"# debugger from Microsoft.");
 				sw.WriteLine($"# Copyright {copyrightHolder} {DateTime.Now.Year}");
+				sw.WriteLine($"# Auto-generated using {Assembly.GetExecutingAssembly().GetName().Name}");
 				sw.WriteLine($"###################################################################################################");
 				sw.WriteLine($"SRC_URI += \"{url};subdir=vsdbg-${{PV}};name=source\"");
 				sw.WriteLine();
@@ -152,6 +154,7 @@ namespace meta_dotnet_core_gen
 				sw.WriteLine($"# Contains the recipe to download the Visual Studio debugger from Microsoft to provide remote");
 				sw.WriteLine($"# debugging from Visual Studio and Visual Studio Code.");
 				sw.WriteLine($"# Copyright {copyrightHolder} {DateTime.Now.Year}");
+				sw.WriteLine($"# Auto-generated using {Assembly.GetExecutingAssembly().GetName().Name}");
 				sw.WriteLine($"###################################################################################################");
 				sw.WriteLine();
 				sw.WriteLine($"require recipes-devtools/vsdbg/vsdbg_{ver.ToString(4)}.inc");
@@ -163,6 +166,7 @@ namespace meta_dotnet_core_gen
 				sw.WriteLine($"###################################################################################################");
 				sw.WriteLine($"# Contains additional parameters for the recipe to download the release binaries from Microsoft.");
 				sw.WriteLine($"# Copyright {copyrightHolder} {DateTime.Now.Year}");
+				sw.WriteLine($"# Auto-generated using {Assembly.GetExecutingAssembly().GetName().Name}");
 				sw.WriteLine($"###################################################################################################");
 				sw.WriteLine($"SUMMARY = \"Contains the binaries for Microsoft's Visual Studio Remote Debugger for Linux\"");
 				sw.WriteLine($"HOMEPAGE = \"https://visualstudio.microsoft.com/\"");
