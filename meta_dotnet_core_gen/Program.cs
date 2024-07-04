@@ -31,7 +31,7 @@ namespace meta_dotnet_core_gen
 {
 	internal class Program
 	{
-		public static int ClickDelayInMilliseconds = 1000;
+		public static int ClickDelayInMilliseconds = 100;
 
 		/// <summary>
 		///   Enumerates the various versions currently supported by meta-dotnet-core.
