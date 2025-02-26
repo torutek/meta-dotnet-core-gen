@@ -33,6 +33,11 @@ namespace meta_dotnet_core_gen
 	internal static class DebuggerUtils
 	{
 		/// <summary>
+		///   Base URL to download the debuggers.
+		/// </summary>
+		public static string BaseUrl = "https://vsdebugger-cyg0dxb6czfafzaz.b01.azurefd.net/";
+
+		/// <summary>
 		///   Downloads the GetVsDbg.sh script and parses it to see the current online debugger version.
 		/// </summary>
 		/// <param name="tmpFolder">Temporary folder to download the script to.</param>
@@ -50,19 +55,32 @@ namespace meta_dotnet_core_gen
 			RecipeUtils.ComputeHashes(downloadedFile, true, true, out scriptSha256, out scriptMd5);
 
 			var scriptContents = File.ReadAllLines(downloadedFile);
+			Version ver = null;
+			string baseUrl = null;
 			foreach (string line in scriptContents)
 			{
-				if (line.Trim().StartsWith("__VsDbgVersion=", StringComparison.OrdinalIgnoreCase))
+				var tempLine = line.Trim();
+				if (tempLine.StartsWith("__VsDbgVersion=", StringComparison.OrdinalIgnoreCase))
 				{
-					if (Version.TryParse(line.Trim().Substring(15), out Version ver))
-					{
-						Console.WriteLine("done!");
-						return ver;
-					}
+					if (ver == null && Version.TryParse(tempLine.Substring(15), out Version tempVer))
+						ver = tempVer;
+				}
+				else if (tempLine.StartsWith("url=\"https://"))
+				{
+					var splits = tempLine.Substring(13).Split('/', StringSplitOptions.RemoveEmptyEntries);
+					if (splits.Length > 0)
+						baseUrl = $"https://{splits[0]}/";
 				}
 			}
 			Console.WriteLine("done!");
-			return null;
+
+			if(string.Compare(baseUrl, BaseUrl, StringComparison.OrdinalIgnoreCase) != 0)
+			{
+				Console.WriteLine($"WARNING: the download URL for the debugger has changed! This may mean all debugger downloads have changed.");
+				BaseUrl = baseUrl;
+			}
+
+			return ver;
 		}
 
 		/// <summary>
@@ -110,7 +128,7 @@ namespace meta_dotnet_core_gen
 			// Download the file.
 			var downloadedFile = Path.Combine(tmpFolder, $"{name}.zip");
 			var fileName = $"vsdbg-{ver.Major}-{ver.Minor}-{ver.Build}-{ver.Revision}/vsdbg-linux-{targetName}.zip";
-			var url = $"https://vsdebugger.azureedge.net/{fileName}";
+			var url = $"{BaseUrl}{fileName}";
 			Console.Write($"Downloading {fileName}...");
 			RecipeUtils.DownloadFile(url, downloadedFile);
 
