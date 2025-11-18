@@ -25,20 +25,21 @@
 // ******************************************************************************************************************************
 using HtmlAgilityPack;
 using meta_dotnet_core_gen.Auto;
+using System.Text;
 
 namespace meta_dotnet_core_gen
 {
 	internal class Program
 	{
-		public static int ClickDelayInMilliseconds = 100;
+		public static int ClickDelayInMilliseconds = 500;
 
 		/// <summary>
 		///   Enumerates the various versions currently supported by meta-dotnet-core.
 		/// </summary>
 		/// <remarks>This app will generate bitbake recipes and .inc files for new versions, but it assumes a generic major version .inc file (Ex: dotnet-core_5.x.x.inc) has already been created.</remarks>
-		public static int[] SupportedVersions = new int[] { 8, 9 };
+		public static int[] SupportedVersions = new int[] { 8, 9, 10 };
 
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
 			Settings settings = new Settings();
 			ConsoleArgs<Settings>.Populate(Environment.CommandLine, settings);
@@ -80,7 +81,10 @@ namespace meta_dotnet_core_gen
 
 			if (key.KeyChar == 'y' || key.KeyChar == 'Y')
 			{
-				var badLinks = UpdateOnlineVersions(ref dotnet);
+				if (dotnet == null)
+					dotnet = new Dotnet();
+				var badLinks = await UpdateOnlineVersionsAsync(dotnet);
+
 				if(badLinks.Length > 0)
 				{
 					Console.WriteLine("The following runtime download links were found which filename could not be parsed:");
@@ -111,6 +115,9 @@ namespace meta_dotnet_core_gen
 				foreach (string ver in changedLinks)
 					Console.WriteLine(ver);
 				Console.WriteLine();
+
+				dotnet.UpdateLinks();
+				dotnet.ExportToXML(settings.Config);
 			}
 
 			// List changed checksums.
@@ -121,6 +128,9 @@ namespace meta_dotnet_core_gen
 				foreach (string ver in changedChecksums)
 					Console.WriteLine(ver);
 				Console.WriteLine();
+
+				dotnet.UpdateChecksums();
+				dotnet.ExportToXML(settings.Config);
 			}
 
 			var filesNeedingHashes = dotnet.GetFilesNeedingHashes();
@@ -238,37 +248,117 @@ namespace meta_dotnet_core_gen
 		/// </summary>
 		/// <param name="cfg"><see cref="Dotnet"/> object to add the new entries to.</param>
 		/// <returns>List of links found on the website that appear to be a new download link, but can't be parsed to obtain the necessary information.</returns>
-		private static string[] UpdateOnlineVersions(ref Dotnet cfg)
+		private static async Task<string[]> UpdateOnlineVersionsAsync(Dotnet cfg)
 		{
-			if (cfg == null)
-				cfg = new Dotnet();
-
 			var badList = new List<string>();
-			HtmlWeb web = new HtmlWeb();
-			foreach (int majVer in SupportedVersions)
+			using (var client = new HttpClient())
 			{
-				Thread.Sleep(ClickDelayInMilliseconds);
-				HtmlDocument doc = web.Load($"https://dotnet.microsoft.com/en-us/download/dotnet/{majVer}.0");
-				foreach (HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
+				client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; Bot/1.0)");
+				foreach (int majVer in SupportedVersions)
 				{
-					var linkTarget = Dotnet.Runtime.Build.Arch.GetLinkTarget(link.InnerText);
-					if (linkTarget.HasValue)
+					await Task.Delay(ClickDelayInMilliseconds);
+					var url = $"https://dotnet.microsoft.com/en-us/download/dotnet/{majVer}.0";
+					using (var resp = await client.GetAsync(url))
 					{
-						var dpage = "https://dotnet.microsoft.com" + link.Attributes["href"].Value;
-						if (dpage.Contains("linux") && dpage.Contains("runtime"))
+						var bytes = await resp.Content.ReadAsByteArrayAsync();
+
+						// Respect charset if provided, fallback to UTF-8.
+						var charset = resp.Content.Headers.ContentType?.CharSet;
+						var encoding = !string.IsNullOrEmpty(charset) ? Encoding.GetEncoding(charset) : System.Text.Encoding.UTF8;
+						var html = encoding.GetString(bytes);
+
+						var doc = new HtmlDocument();
+						doc.LoadHtml(html);
+
+						var anchors = doc.DocumentNode.SelectNodes("//a[@href]");
+						if(anchors == null)
 						{
-							Thread.Sleep(ClickDelayInMilliseconds);
-							HtmlDocument downloadLink = web.Load(dpage);
-							HtmlNode checkNode = downloadLink.GetElementbyId("checksum");
-							HtmlNode linkNode = downloadLink.GetElementbyId("directLink");
-							if (checkNode != null && linkNode != null)
+							Console.WriteLine($"WARNING: No links found on the page for .NET {majVer}.0");
+							continue;
+						}
+
+						foreach (var link in anchors)
+						{
+							// Safe retrieval of link text and target
+							var linkText = link.InnerText ?? string.Empty;
+							var linkTarget = Dotnet.Runtime.Build.Arch.GetLinkTarget(linkText);
+							if (!linkTarget.HasValue)
+								continue;
+
+							var href = link.GetAttributeValue("href", null);
+							if (string.IsNullOrEmpty(href))
+								continue;
+
+							var dpage = href.StartsWith("http", StringComparison.OrdinalIgnoreCase) ? href : "https://dotnet.microsoft.com" + href;
+							if (!(dpage.Contains("linux", StringComparison.OrdinalIgnoreCase) && dpage.Contains("runtime", StringComparison.OrdinalIgnoreCase)))
+								continue;
+
+							await Task.Delay(ClickDelayInMilliseconds);
+
+							// Fetch the download detail page using HttpClient (respect charset)
+							try
 							{
-								string url = linkNode.Attributes["href"].Value;
-								if (!TryUpdateLink(cfg, url, checkNode.Attributes["Value"].Value))
+								using (var dresp = await client.GetAsync(dpage))
 								{
-									if (!url.Contains("preview") && !url.Contains("rc"))
-										badList.Add(linkNode.Attributes["href"].Value);
+									if (!dresp.IsSuccessStatusCode)
+									{
+										//Console.WriteLine($"WARNING: Failed to fetch detail page {dpage} (HTTP {(int)dresp.StatusCode})");
+										continue;
+									}
+
+									var dbytes = await dresp.Content.ReadAsByteArrayAsync();
+									var dcharset = dresp.Content.Headers.ContentType?.CharSet;
+									var dencoding = !string.IsNullOrEmpty(dcharset) ? Encoding.GetEncoding(dcharset) : System.Text.Encoding.UTF8;
+									var dhtml = dencoding.GetString(dbytes);
+
+									var downloadDoc = new HtmlDocument();
+									downloadDoc.LoadHtml(dhtml);
+
+									HtmlNode checkNode = downloadDoc.GetElementbyId("checksum");
+									HtmlNode linkNode = downloadDoc.GetElementbyId("directLink");
+
+									if (checkNode == null || linkNode == null)
+									{
+										// Try common alternatives and log for diagnosis
+										var altCheck = downloadDoc.DocumentNode.SelectSingleNode("//*[contains(@id,'checksum') or contains(@class,'checksum')]");
+										var altLink = downloadDoc.DocumentNode.SelectSingleNode("//a[contains(@id,'direct') or contains(@class,'direct') or contains(@href,'/download/')]");
+										if (altCheck != null) checkNode = altCheck;
+										if (altLink != null) linkNode = altLink;
+									}
+
+									if (checkNode != null && linkNode != null)
+									{
+										// Try both attribute casing variants and fallback to inner text if needed
+										var urlAttr = linkNode.GetAttributeValue("href", null);
+										var checksumAttr = checkNode.GetAttributeValue("Value", null) ?? checkNode.GetAttributeValue("value", null) ?? checkNode.InnerText;
+
+										if (string.IsNullOrEmpty(urlAttr))
+										{
+											//Console.WriteLine($"WARNING: directLink element on {dpage} has no href attribute.");
+											continue;
+										}
+										if (string.IsNullOrEmpty(checksumAttr))
+										{
+											//Console.WriteLine($"WARNING: checksum element on {dpage} has no value.");
+											continue;
+										}
+
+										if (!TryUpdateLink(cfg, urlAttr, checksumAttr))
+										{
+											if (!urlAttr.Contains("preview", StringComparison.OrdinalIgnoreCase) && !urlAttr.Contains("rc", StringComparison.OrdinalIgnoreCase))
+												badList.Add(urlAttr);
+										}
+									}
+									else
+									{
+										//Console.WriteLine($"WARNING: Couldn't find checksum/directLink on {dpage}");
+										// Optionally persist dhtml for debugging
+									}
 								}
+							}
+							catch (Exception ex)
+							{
+								//Console.WriteLine($"ERROR: Exception fetching/parsing {dpage}: {ex.Message}");
 							}
 						}
 					}

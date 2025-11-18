@@ -493,6 +493,42 @@ namespace meta_dotnet_core_gen.Auto
 		}
 
 		/// <summary>
+		///   Updates the links for any that new ones are available for.
+		/// </summary>
+		public void UpdateLinks()
+		{
+			foreach (var runtime in this.ChildRuntimes)
+			{
+				foreach (var build in runtime.ChildBuilds)
+				{
+					foreach (var arch in build.ChildArchs)
+					{
+						if (arch.NewLink != null && arch.NewLink != arch.Link)
+							arch.Link = arch.NewLink;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///   Updates the checksums for any that are new ones.
+		/// </summary>
+		public void UpdateChecksums()
+		{
+			foreach (var runtime in this.ChildRuntimes)
+			{
+				foreach (var build in runtime.ChildBuilds)
+				{
+					foreach (var arch in build.ChildArchs)
+					{
+						if (arch.NewSha512 != null && arch.NewSha512 != arch.Sha512)
+							arch.Sha512 = arch.NewSha512;
+					}
+				}
+			}
+		}
+
+		/// <summary>
 		///   Finds all the packages where the meta version isn't online.
 		/// </summary>
 		/// <param name="online"><see cref="Dotnet"/> object containing online information.</param>
