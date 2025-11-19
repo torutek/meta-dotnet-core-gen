@@ -108,6 +108,18 @@ namespace meta_dotnet_core_gen
 						list[version.Major].Add(version.ToString(4));
 					}
 				}
+				else if (Path.GetExtension(file) == ".inc")
+				{
+					// Just to make sure we have the major version inc files too.
+					string fileBeginning = $"vsdbg_";
+					var verString = Path.GetFileNameWithoutExtension(file).Replace(fileBeginning, string.Empty);
+					var splits = verString.Split('.', StringSplitOptions.RemoveEmptyEntries);
+					if (splits.Length == 2 && int.TryParse(splits[0], out int majorVer))
+					{
+						if (!list.ContainsKey(majorVer))
+							list.Add(majorVer, new List<string>());
+					}
+				}
 			}
 			return list;
 		}
