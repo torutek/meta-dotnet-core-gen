@@ -37,6 +37,13 @@ namespace meta_dotnet_core_gen
 		/// <param name="tempFilePath">Temporary file path to store the file to.</param>
 		public static void DownloadFile(string link, string tempFilePath)
 		{
+			// Ensure the destination directory exists before attempting download
+			var destDir = Path.GetDirectoryName(tempFilePath);
+			if (!string.IsNullOrEmpty(destDir) && !Directory.Exists(destDir))
+			{
+				Directory.CreateDirectory(destDir);
+			}
+
 			if (File.Exists(tempFilePath))
 				File.Delete(tempFilePath);
 

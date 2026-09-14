@@ -210,7 +210,8 @@ namespace meta_dotnet_core_gen.Auto
 							sw.WriteLine();
 							sw.WriteLine($"# SHA-512 hash is '{this.Sha512.ToLower()}'");
 							sw.WriteLine();
-							sw.WriteLine($"SRC_URI[md5sum] = \"{this.Md5.ToLower()}\"");
+							if (!string.IsNullOrEmpty(this.Md5))
+								sw.WriteLine($"SRC_URI[md5sum] = \"{this.Md5.ToLower()}\"");
 							sw.WriteLine($"SRC_URI[sha256sum] = \"{this.Sha256.ToLower()}\"");
 							sw.WriteLine();
 						}
