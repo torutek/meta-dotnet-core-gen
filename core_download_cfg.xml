@@ -898,6 +898,11 @@
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.30/aspnetcore-runtime-8.0.30-linux-arm64.tar.gz" md5="d13796c25e5348da01256973d102a153" sha256="827785571f027dd8bbc64603b93826a7274941fb24180ad6af6e5760cf3f67dc" sha512="279d8ab84b6102c29fc96b5980805e80c679a234abdbe8047aa9f5954b260ddb70b4ae0793e2c379335d20dfaa6c86bdf7c8bd7d442c8ebe3c02d75b10bc8a4f" target="arm64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.30/aspnetcore-runtime-8.0.30-linux-arm.tar.gz" md5="0c097f58217859a752c3b68a6b343c17" sha256="f1270b01b719b52e2274862ab1c7945886e14b7750eadb332cd27798636dc9ea" sha512="d67d48853ecaae216fbb028813d70030130047e424581d458b5ee983bad4b10b02961f84acd84e9ec3083f937b22c8d8d8bb022237c457ec6bbb74ed6090f0a6" target="arm" />
     </build>
+    <build version="32">
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.32/aspnetcore-runtime-8.0.32-linux-x64.tar.gz" md5="5cfb9558413283c99e1b919f425b4b47" sha256="bde0bb08f1f10d6dd60d0c3d8a220e33d7ce6d1c74c7098cf7f6a4e1a1ef5137" sha512="6dbdcfde49b31e7f81dbf08e19f4f05deb2f01077974306b8071467de0d0400cd709cd831ad97817f8dfd4fedc8b76512194b123d13cfc4918cc6f6b6f154b87" target="x64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.32/aspnetcore-runtime-8.0.32-linux-arm64.tar.gz" md5="47871feaacd005d3cf767af975be26cf" sha256="c53ba238b23b47eec5e1f02980b2d0d128cdddee9cb0f8834c9f9171df1f8710" sha512="8f769002d72c320a456438c45249b7c027828d609738aec3aa746d4cc96ebe70ed3d71fa4b88f7db4bce9f5fce44215d316295abc2d9aa8ae1e012353db29a42" target="arm64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.32/aspnetcore-runtime-8.0.32-linux-arm.tar.gz" md5="7857e9d243101b27306b5180fdd84085" sha256="367c35c63c1ffe0263462ec20871d075ddcf40c26c28c83c0a4e20f77be631dc" sha512="87a7171c438c24b81187ff51836b1f3ae15aad265d0a6d38422e9ff5f17662a81b5eaada8538b2d618f30309f47b50793ca72c42f7ab0674ee0ca7bd58b572e3" target="arm" />
+    </build>
   </runtime>
   <runtime name="dotnet" version="8.0">
     <build version="0">
@@ -1055,6 +1060,11 @@
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.30/dotnet-runtime-8.0.30-linux-arm64.tar.gz" md5="cacae384d605b3fa1a6accbbb75eaef1" sha256="3c034d09ec9bb788167e23ff542ae19eacbccb6d06c07bf30915966a3178129a" sha512="b900fb5822e44affc110d06b9c5ed372ed01485f307b1900bcea0bd1a9bc166a109a35ab741327668d83a2fe9d8ac0a94a12a94f4188bd2f8e1cadf404697aa1" target="arm64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.30/dotnet-runtime-8.0.30-linux-arm.tar.gz" md5="3672d9dcee47f72af628f5113d7a43e1" sha256="c79ff7c85bbb3ae426ec61d072d686d990fc57b4adcf600c744bb57829c85b6a" sha512="a4396af66b6ceee6f95354f13519463091de47493305071460984ce09bfbb1aebec7907b2ea01f1db1225e4f194481c3d17dd05f1735c0281b9d1778b2954285" target="arm" />
     </build>
+    <build version="32">
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.32/dotnet-runtime-8.0.32-linux-x64.tar.gz" md5="2389581857b077ac269efe6874d3e937" sha256="a967d422e196d79679dede132418372aa34882b638a1a8dd722d5641bcd697aa" sha512="639a17d84e4d52fecd62c7d4e528e7bc0ae3c9860de2530cb41a2ee7196b69ea18271d8795849180742770e25b4f913df292a5a236fa197cf5d3cd0ec5ba665f" target="x64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.32/dotnet-runtime-8.0.32-linux-arm64.tar.gz" md5="631cc978a17c1b1749a272c2eaa35bb2" sha256="63e261015861eb65c7b6a13aab0f5f84da1b9213bfb68b3db17c8a02b9a0ce7b" sha512="234372d5af973e23958b209eeccbee35f4209af98b7ecc93f16488869eef0729aa383cee5c6cc23dd836cbde88090ec5df0c317d39d3e17e09051403392ea9cd" target="arm64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.32/dotnet-runtime-8.0.32-linux-arm.tar.gz" md5="2270a623ab1f1f5d9ec51ca87557ed31" sha256="a89435b8a3df368c425380b8605318e5b7550287acb66d370ff659dca52fd448" sha512="1be03124164a5bb3ea7a93d568a30ded9aa93143dad462923db911f34f4eebdbcedaf0b53adff26a35da76949847056737985c07c95b463ac9969c433947831b" target="arm" />
+    </build>
   </runtime>
   <runtime name="aspnet" version="9.0">
     <build version="0">
@@ -1161,6 +1171,11 @@
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.19/aspnetcore-runtime-9.0.19-linux-x64.tar.gz" md5="5b9f733f7fdc30ade95f155d28d1a0a8" sha256="d949d01244ffd3bc0ab23602a4c186d5e961cae75961f0ed0e25b9e57e164b4f" sha512="579f37c2af8dbe8f7e3ef294c02fcf6ce2649fc34aba8f8ead087a9bd794403a8852079fc0f1c5cbe5baba337e6b999478667fed0f05fbe0fb8fba70661f7608" target="x64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.19/aspnetcore-runtime-9.0.19-linux-arm64.tar.gz" md5="b49a4c77ffac6dc3f21ed79068543063" sha256="6d09f9462268e110bbaf4577eec61fa3df2b449c5d6f2d3b4eec7d669367a483" sha512="3c716a748de08c44b475d8a7e2ef8973d8d330fea31d076688263c209c649318c396f8e4779b5bc1ae2176f7b623985a0da177bb50265da722c73b6aebf7faeb" target="arm64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.19/aspnetcore-runtime-9.0.19-linux-arm.tar.gz" md5="0a616eee3eebd61707ef22fce2b9a7ed" sha256="3cf459678cf922a1fa018b9f5145f1451ff78dcc376c462dbdc76dbcdfc90825" sha512="241f135ac4ceb8eb8b2d135f598f8d1ebbe83927e23c3f10e4c80595cdf6725976f7f702f2920e4dc6c83da8a43ae8078eb08f3c2b8cb71aaa35b0f1a1db2047" target="arm" />
+    </build>
+    <build version="21">
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.21/aspnetcore-runtime-9.0.21-linux-x64.tar.gz" md5="23982e1e3dfb881f617e0ec4bb1ae926" sha256="b263c0f033864b5f7d085461248025e9d4a3e917eef66d52a04c787b1bb44b6b" sha512="c2fd044c32cb4e20bbd02ec6f8b5b226e6211f114009e75bbb485d192b6e42e859cca165d5248468d1d9d4ec1f60adafbb9a1f2121b62cc432019e8210d93926" target="x64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.21/aspnetcore-runtime-9.0.21-linux-arm64.tar.gz" md5="27bd26cbbbed910a43f3ec18ea27d5c9" sha256="834bb8a5968cab4dc38f809404f9a6420c31475e1441009fcd53a10fa93273a1" sha512="b85e2f4d77024a6bc3efb3290320f7302cc3fc780dd0e2121bc98ded42a7fcdc7ecfa23ad5b816054087bb2110be1fd8e25c3c53635a86c5fde2d8a46625f6d3" target="arm64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/9.0.21/aspnetcore-runtime-9.0.21-linux-arm.tar.gz" md5="aae746292e9791d88dc51d678e69e572" sha256="d39d36d3210b2db386c4d17b5235072ccbccf8578558b266abeeaf55ddf23062" sha512="bf0d1e2bf88f48366bd397adc6f027b594a7c1515bb1acfc75e58b79a1771ada4b38d403d59e345c3157f8c44e294c4b39d0ccae5c20fd8fa5e3c03e9ae40a60" target="arm" />
     </build>
   </runtime>
   <runtime name="dotnet" version="9.0">
@@ -1269,6 +1284,11 @@
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.19/dotnet-runtime-9.0.19-linux-arm64.tar.gz" md5="03c538a63f2a99bd41e6cf37c4b470fe" sha256="43f730fbe97bd9a50c34d3846f6ec01767d2abc86319e5003b52ed8d43dfd3d4" sha512="e07510c649fedf3fb13dd21026f34c8bcd17f54a68e4c071a1287d26e107e09d9ccd13ef0f63c630d309b8b797310a8dc42aed6a551eb145d9fad86a5819a4ee" target="arm64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.19/dotnet-runtime-9.0.19-linux-arm.tar.gz" md5="556a6bddcc1d591da406bdb085656cad" sha256="3b1c05f3246ffe2b03d9983fb865fb6593659c798be91fdd2f685c953ed20e28" sha512="9479ded6c69a09163599d2b5fb55f6f2efb89628b6fb8aaaf6b882a7391f065a537393781f0cd6dd5a3802690a5a74678d4e698aa9e11e3dae87004a2acfcd5a" target="arm" />
     </build>
+    <build version="21">
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.21/dotnet-runtime-9.0.21-linux-x64.tar.gz" md5="498ab91be93850a7e8c367b9aa1987f2" sha256="abc9eda6da2360b0a4e607fadea886f4d450db93a4f333dcdb79a6ea43b99fee" sha512="6faa847e25a02b87c737c8222c6f5f9fd5f20945b7d239a080a7e3d99b97af48e6b6121aa55dee2e797cc89fe7eb97d235e12422b1b22786cbf169420156ae1e" target="x64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.21/dotnet-runtime-9.0.21-linux-arm64.tar.gz" md5="86697959f3563ad3d8e44cf293bd8318" sha256="729d3898460f2f065f94e0634e076959f3aac104b6d1381549e9609162a0c25a" sha512="ee67a87ceee8d4f683f20fe576fe03886e1cedad9011c3c2e525693849f20e3794d8e96e72209985cce3f4bcec6816faec8f31e6206ffc1d3a607968f7866d8c" target="arm64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.21/dotnet-runtime-9.0.21-linux-arm.tar.gz" md5="099a8da6943b0502551257c094b69261" sha256="3bbf2505530ee472994836e0f8359e753e71c9d526baaee6e029adf816cbfd0a" sha512="ae66375d3132907e86314197c8f9fd065a3c1fd8e390684eeffa787ccdbb9819df03546d5d395b14195b76c02d7e965b100d215f77753b57c2bf17a15d5fe2a0" target="arm" />
+    </build>
   </runtime>
   <runtime name="aspnet" version="10.0">
     <build version="0">
@@ -1336,6 +1356,11 @@
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.11/aspnetcore-runtime-10.0.11-linux-arm64.tar.gz" md5="71c6ba1a904df58b750a41d4ac010156" sha256="935a608c86efa6455dc0e9c983b92c03aa5ccc56b4d4deac0444a71f47e9106a" sha512="9549f7a59d5d6f7dd3e965bf88631698b23974aff4e34d589037d6ae9a3f4433902881b4d23f7e18602ab954823f5be35015054a6eccb57041b0f20d92873ed7" target="arm64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.11/aspnetcore-runtime-10.0.11-linux-arm.tar.gz" md5="d884e7e5327b9600e1a3e7bff08f8c65" sha256="1e99baa5f3a5b30e9c3fba81bdf6dca567abdcb6e0a6065195aaca9b6b900c50" sha512="716dd2798f445707af5220d0c9c5587efd5b279205dcd85c4fcd4866d2a43942a26662734e7ab8cc74d27c39f478253ea365d078d862c70fb0f917f1864fb263" target="arm" />
     </build>
+    <build version="13">
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.13/aspnetcore-runtime-10.0.13-linux-x64.tar.gz" md5="93785e398cad8e9da68af0227b8ebf47" sha256="28ff9afd94108b574d3565627d0e755f9d20327ec588259eec777497252e0ae9" sha512="7b20d4164f097e1cf616d8174b6a64be100e6f30dc4e028b16e551e8b0c86dff0ef424bb4bf52d1ff0ecca38e102d3fa80814e06cb85a32d6eee4c3b99764f79" target="x64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.13/aspnetcore-runtime-10.0.13-linux-arm64.tar.gz" md5="92af002f0eac712a001a2871910f0760" sha256="d8d4f61d9985f2ce49f2b918b426d1ee1378d64bb00bc0331274b0df2954aad8" sha512="7f70bf12f71d0949370b5d6681ad9702d13f5f1e476f9ec8f0455c564a9b69e4fca455d3d201aef8500fef7f24455b278772152233d5a36a1db7de9afad4ed37" target="arm64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/10.0.13/aspnetcore-runtime-10.0.13-linux-arm.tar.gz" md5="bb7afdfd09186fc86d8622b460312b3f" sha256="6ce84956d176402f2bef232341d623f9e72ce46d04d08acc17ffc34d5a36530e" sha512="a5be2c986c01cad2428529680471e6b030f10b310ccd6cf383dafdb8b977df3ff7b221efdec792aac41f0a4986ede0ca3010962ef2a03c2c60632ef3bc2933cc" target="arm" />
+    </build>
   </runtime>
   <runtime name="dotnet" version="10.0">
     <build version="0">
@@ -1402,6 +1427,11 @@
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.11/dotnet-runtime-10.0.11-linux-x64.tar.gz" md5="1f8337adca6749cc94534d69c79e568c" sha256="7d847ecaa123efae40b114c5d45641e456b4cd65e5114b4612095d45d7c71a63" sha512="64c77a5f98d6dfc63393ed5d2fed47c2855c7cdd4322008b3b13e1d0b710aefc1fba7e56612f25f7e8a2b1b6cef5cf77cb3a834ff3685e723ad286703c3396d8" target="x64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.11/dotnet-runtime-10.0.11-linux-arm64.tar.gz" md5="094fbe7cd5ab57c180ee0f39262b17cf" sha256="a7958c89c312b43fbe07e3fc99fc6646ee9f14d6e1eb7522c7de0c24c2a97729" sha512="2a729a4eff6a55e271b3ae7d4f2be98aef16df22e3b9316827558e204f7881bbf0b7b9f8ebcfb1a1419c87fbcb8a00f5be72b6474e02c695c30b2c52bafb65ed" target="arm64" />
       <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.11/dotnet-runtime-10.0.11-linux-arm.tar.gz" md5="37016c73e82f5f7270eebb2c2a71cc80" sha256="e34341879443608bc67c766e1861e2d80e4758d9963e2724652e62521c92aec1" sha512="7c2f0a7bd42310b8d09dbcc90ece622397dbc38eb6da3a249b30226d63d0119330411cafff3de950d821b5ceb499404b47db55fdaa8529b04dd14c632396619d" target="arm" />
+    </build>
+    <build version="13">
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.13/dotnet-runtime-10.0.13-linux-x64.tar.gz" md5="303ae462ecdb863986e079fd9d0a8c9d" sha256="958c952691d2c3f8ce21f717f4e911c02b5da0e21ead21bd576368c454b79c77" sha512="9574d95364110409416735e7842796f8d614c21d74cb25d204a3e4cfd11b2c05efdf19ca89b8069650a04f64add2705967dcb04b8665a36d7a3f30a5d8c05afe" target="x64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.13/dotnet-runtime-10.0.13-linux-arm64.tar.gz" md5="3e3cdfa2e5c10ab9c9877356f1411c71" sha256="e1274f06c9f891737afc32dc9e0e1cbc62d4a1e4b1eac27df50ffb7c00dd87f6" sha512="f9f0b08e7d75ff9528329250bffe58418a9c1d6a2467bc7bc19659b7b385d67c566db8477d80ea4c087b4adeb2cc05b51e33ec47ad977b97f1eed7cd433be8c8" target="arm64" />
+      <arch link="https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.13/dotnet-runtime-10.0.13-linux-arm.tar.gz" md5="5de5f7aac724f24766cacc39b76836d4" sha256="f9922893ed0831257f34edbf0db2f4e2ae910eac3430ea7509cf20bac547ac67" sha512="b1f2c4004c1f3e6bad7448f724213da354282b3c9b1fc57e2ed48ef74a747fc9fbb238d6819e6cf1ea4aa175a24d4e4d9f618d601ff8affc531b1ca8b18dbf88" target="arm" />
     </build>
   </runtime>
 </dotnet>
